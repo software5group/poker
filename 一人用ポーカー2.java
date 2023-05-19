@@ -88,21 +88,21 @@ class Hand{
     public void ChangeHand(Deck deck){
         Scanner scanner = new Scanner(System.in);
         System.out.print("何枚のカードを交換しますか？：");
-        int changenumber=scanner.nextInt();
-        if(changenumber==0){
+        int n=scanner.nextInt();
+        if(n==0){
             //scanner.close();
             return;
         }else{
-            int num;
+            int change;
             for(int i=1;i<=changenumber;i++){
                 do{
                     System.out.print("何番目のカードを交換するか入力：");
-                    num = scanner.nextInt();
-                    if(num<1||num>5){
+                    change = scanner.nextInt();
+                    if(change<1||change>5){
                         System.out.println("正しく入力してください");
                     }
-                }while(num<1||num>5);
-                hand[num-1] = deck.Draw();
+                }while(change<1||change>5);
+                hand[change-1] = deck.Draw();
             } 
         }
         //scanner.close();
