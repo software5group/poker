@@ -342,7 +342,7 @@ class Card{
 class Deck{
     final int totalcard=52; // カードの総数
     private List<String> cardlist;
-    private int cardindex = 0; // 引いた数
+    private int cardindex = 0; // カードを引く箇所
 
     // 山札の初期化 //
     public void Reset(){
