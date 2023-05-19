@@ -94,7 +94,7 @@ class Hand{
             return;
         }else{
             int change;
-            for(int i=1;i<=changenumber;i++){
+            for(int i=1;i<=n;i++){
                 do{
                     System.out.print("何番目のカードを交換するか入力：");
                     change = scanner.nextInt();
