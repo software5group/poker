@@ -333,7 +333,7 @@ class Card{
 
     // 1~52のintに変換 //
     public int Toint(){ 
-        return number + mark * 13 + 1;
+        return number + mark * 13;
     }
 }
 
