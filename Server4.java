@@ -14,10 +14,17 @@ public class Server4 {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
+        List<Socket> clientSockets = new ArrayList<>();
 
         while (true) {
             Socket clientSocket = serverSocket.accept();
-            new ServerThread(clientSocket).start();
+            clientSockets.add(clientSocket);
+            if (clientSockets.size() >= 2) {
+                for (Socket socket : clientSockets) {
+                    new ServerThread(socket).start();
+                }
+                clientSockets.clear();
+            }
         }
     }
 }
