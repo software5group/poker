@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 
-interface Callback {
-    void Change(Deck deck, Hand player1, Hand player2);
-}
-
 public class Server5{
     private static final int PORT = 8080;
 
