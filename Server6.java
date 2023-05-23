@@ -28,13 +28,15 @@ public class Server6{
         deck.Reset();
         Hand player1= new Hand();
         Hand player2= new Hand();
+        int threadcounter = 0;
 
         while (true) {
             Socket clientSocket = serverSocket.accept();
             clientSockets.add(clientSocket);
             if (clientSockets.size() >= 2) {
                 for (Socket socket : clientSockets) {
-                    new ServerThread(socket,deck,player1,player2).start();
+                    new ServerThread(socket,deck,player1,player2,threadcounter).start();
+                    threadcounter++;
                 }
                 clientSockets.clear();
             }
@@ -51,12 +53,14 @@ class ServerThread extends Thread {
     private Hand player;
     private Hand player1;
     private Hand player2;
+    private int threadcounter;
 
-    public ServerThread(Socket socket,Deck deck,Hand player1,Hand player2) {
+    public ServerThread(Socket socket,Deck deck,Hand player1,Hand player2,int threadcounter) {
         this.clientSocket = socket;
         this.deck=deck;
         this.player1=player1;
         this.player2=player2;
+        this.threadcounter=threadcounter;
     }
 
     public synchronized void run() {
@@ -116,7 +120,7 @@ class ServerThread extends Thread {
 
                     while(player1.copycounter==0||player2.copycounter==0){
                         Thread.sleep(1000L);    //1秒待機        
-                        if (Thread.currentThread().getName().equals("Thread-0")) {
+                        if (threadcounter % 2 == 0) {
                             if(player1.copycounter==0){
                             player1.SetHand(player);
                             System.out.println("player1の手札");
@@ -147,14 +151,16 @@ class ServerThread extends Thread {
                     System.out.println(player1.Winlose(player1, player2));
                     
                     //勝者をクライアントに送る
-                    if (Thread.currentThread().getName().equals("Thread-0")) {
-                        out.println(player1.Winlose(player1, player2));}
-                    else{
+                    if (threadcounter % 2 == 0) {
+                        out.println(player1.Winlose(player1, player2));
+                        threadcounter += 2;
+                    } else{
                         out.println(player1.Winlose(player2, player1));
+                        threadcounter += 2;
                     }
                     System.out.println();
 
-                      }
+                }
 
             }
 
@@ -168,3 +174,4 @@ class ServerThread extends Thread {
         }
     }
 }
+
