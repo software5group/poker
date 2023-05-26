@@ -85,19 +85,22 @@ public class Client6 {
                 //in.close();
                 //stdIn.close();
                 //socket.close();
-                
                 int key;
                 while(true){
                     System.out.println("終了するなら1を、続けるなら0を入力してください:");
                     key = scanner.nextInt();
-                    if(key == 1) break;
+                    if(key == 1){
+                        out.println(key);
+                        break;
+                    }
                     else if(key == 0){
-                        System.out.println("次のゲームを開始します");
+                        out.println(key);
                         break;
                     } else{
                         System.out.println("1か0を入力してください");
                     }
                 }
+                System.out.println(in.readLine());
                 if(key == 1) break;
 
             }
