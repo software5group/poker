@@ -143,6 +143,7 @@ class Hand{
 
     // 役を判断 //
     public void CheckRole(){
+        rank=100;
         int AKQJ=number[1]*number[10]*number[11]*number[12]*number[13];
         for(int i=0;i<=3;i++){
             if(mark[i]==5){
