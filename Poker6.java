@@ -382,5 +382,6 @@ class Deck{
 
     public void CopyDeck(Deck deck){
         this.cardlist=deck.cardlist;
+        this.cardindex=deck.cardindex;
     }
 }
