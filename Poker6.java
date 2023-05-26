@@ -15,7 +15,7 @@ public class Poker6{
     Hand player2= new Hand();
     player1.MakeHand(deck);
     player2.MakeHand(deck);
-    Arrays.sort(player1.hand);
+    player1.SortCards();
     player1.MarkCounter();
     player1.NumberCounter();
     player1.CheckRole();
@@ -26,7 +26,7 @@ public class Poker6{
     System.out.println("あなたの手札は");
     player1.ShowHand();
     player1.ChangeHand(deck);
-    Arrays.sort(player1.hand);
+    player1.SortCards();
     player1.MarkCounter();
     player1.NumberCounter();
     player1.CheckRole();
@@ -37,7 +37,7 @@ public class Poker6{
     System.out.println("相手の手札は");
     player2.ShowHand();
     player2.ChangeHand(deck);
-    Arrays.sort(player2.hand);
+    player2.SortCards();
     player2.MarkCounter();
     player2.NumberCounter();
     player2.CheckRole();
