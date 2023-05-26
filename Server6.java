@@ -66,6 +66,11 @@ class ServerThread extends Thread {
             //out.println();
 
             while (true) {
+                if(threadcounter != 0 && threadcounter != 1){
+                    player1.copycounter=0;
+                    player2.copycounter=0;
+                }
+
                 //送受信用のハンド
                 Hand player =new Hand();
                 Deck deck1 = new Deck();
@@ -93,15 +98,14 @@ class ServerThread extends Thread {
                             change = Integer.parseInt(in.readLine());//クライアントが送ってきたものを読み込んでchangeに入れる
                             player.hand[change-1] = deck.Draw();//新しく引いたカードに置き換える
                         }
-                        //notifyAll();
                     }
                     deck.CopyDeck(deck1);
                     
                     player.SortCards();
                     System.out.println("最後の手札");
-                    player.MarkCounter();
+                    /*player.MarkCounter();
                     player.NumberCounter();
-                    player.CheckRole();
+                    player.CheckRole();*/
                     player.ShowHand();
 
                     for(int i=0;i<=4;i++){
@@ -112,25 +116,25 @@ class ServerThread extends Thread {
                         Thread.sleep(1000L);    //1秒待機        
                         if (threadcounter % 2 == 0) {
                             if(player1.copycounter==0){
-                            player1.SetHand(player);
-                            System.out.println("player1の手札");
-                            player1.MarkCounter();
-                            player1.NumberCounter();
-                            player1.CheckRole();
-                            player1.ShowHand();
-                            System.out.println(player1.copycounter+"と"+player2.copycounter);
-                            System.out.println("Player1 Rank: " + player1.rank);//ランクを出してスレッド0だったらplayer1に入れる
+                                player1.SetHand(player);
+                                System.out.println("player1の手札");
+                                player1.MarkCounter();
+                                player1.NumberCounter();
+                                player1.CheckRole();
+                                player1.ShowHand();
+                                System.out.println(player1.copycounter+"と"+player2.copycounter);
+                                System.out.println("Player1 Rank: " + player1.rank);//ランクを出してスレッド0だったらplayer1に入れる
                             }
                         }else{
                             if(player2.copycounter==0){
-                            player2.SetHand(player);
-                            System.out.println("player2の手札");
-                            player2.MarkCounter();
-                            player2.NumberCounter();
-                            player2.CheckRole();
-                            player2.ShowHand();
-                            System.out.println(player1.copycounter+"と"+player2.copycounter);
-                            System.out.println("Player2 Rank: " + player2.rank);//スレッド0以外だとplayer2に
+                                player2.SetHand(player);
+                                System.out.println("player2の手札");
+                                player2.MarkCounter();
+                                player2.NumberCounter();
+                                player2.CheckRole();
+                                player2.ShowHand();
+                                System.out.println(player1.copycounter+"と"+player2.copycounter);
+                                System.out.println("Player2 Rank: " + player2.rank);//スレッド0以外だとplayer2に
                             }
                         }
                     }
@@ -138,7 +142,7 @@ class ServerThread extends Thread {
                     
                     player1.getKicker(player1);
                     player2.getKicker(player2);
-                    System.out.println(player1.Winlose(player1, player2));
+                    //System.out.println(player1.Winlose(player1, player2));
                     
                     //勝者をクライアントに送る
                     if (threadcounter % 2 == 0) {
@@ -148,7 +152,34 @@ class ServerThread extends Thread {
                         out.println(player1.Winlose(player2, player1));
                         threadcounter += 2;
                     }
+
                     System.out.println();
+
+                    while(player1.copycounter==1||player2.copycounter==1){
+                        Thread.sleep(1000L);    //1秒待機        
+                        if (threadcounter % 2 == 0) {
+                            if(player1.copycounter==1){
+                                player1.key = Integer.parseInt(in.readLine());
+                                System.out.println(player1.key);
+                                player1.count();
+                            }
+                        }else{
+                            if(player2.copycounter==1){
+                                player2.key = Integer.parseInt(in.readLine());
+                                System.out.println(player2.key);
+                                player2.count();
+                            }
+                        }
+                    }
+
+                    if(player1.key == 1 || player2.key == 1){
+                        out.println("1が選ばれたので終了します");
+                        in.close();
+                        out.close();
+                        clientSocket.close();
+                    }else{
+                        out.println("次のゲームを開始します");
+                    }
 
                 }
 
@@ -164,4 +195,3 @@ class ServerThread extends Thread {
         }
     }
 }
-
