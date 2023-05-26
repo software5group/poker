@@ -15,7 +15,7 @@ public class Poker6{
     Hand player2= new Hand();
     player1.MakeHand(deck);
     player2.MakeHand(deck);
-    player1.SortCards();
+    Arrays.sort(player1.hand);
     player1.MarkCounter();
     player1.NumberCounter();
     player1.CheckRole();
@@ -26,7 +26,7 @@ public class Poker6{
     System.out.println("あなたの手札は");
     player1.ShowHand();
     player1.ChangeHand(deck);
-    player1.SortCards();
+    Arrays.sort(player1.hand);
     player1.MarkCounter();
     player1.NumberCounter();
     player1.CheckRole();
@@ -37,7 +37,7 @@ public class Poker6{
     System.out.println("相手の手札は");
     player2.ShowHand();
     player2.ChangeHand(deck);
-    player2.SortCards();
+    Arrays.sort(player2.hand);
     player2.MarkCounter();
     player2.NumberCounter();
     player2.CheckRole();
@@ -69,6 +69,7 @@ class Hand{
     int chip =500; //持ち金
     int betchip;
     int copycounter;
+    int key;
 
     //手札生成// 
     public void MakeHand(Deck deck){
@@ -140,54 +141,53 @@ class Hand{
         }
     }
 
-// 役を判断 //
-public void CheckRole(){
-    rank=100;
-    int AKQJ=number[1]*number[10]*number[11]*number[12]*number[13];
-    for(int i=0;i<=3;i++){
-        if(mark[i]==5){
-            if(AKQJ==1){
-                if(rank>1){ rank=1; role="ロイヤルストレートフラッシュ";}
-            }
-            for(int j=1;j<=9;j++){
-                int straight=number[j]*number[j+1]*number[j+2]*number[j+3]*number[j+4];
-                if(straight==1){
-                    if(rank>2){rank=2; role="ストレートフラッシュ";}    
-                }else{
-                    if(rank>5){rank=5; role="フラッシュ";}
-                }   
-            }
-        }else {
-            for(int n=1;n<=13;n++){
-                if(number[n]==4){
-                    if(rank>3){rank=3; role="フォーカード";}
-                }else if(number[n]==3){
-                    for(int m=1;m<=13;m++){
-                        if(number[m]==2){
-                            if(rank>4){rank=4; role="フルハウス";}    
-                        }
-                    }
-                    if(rank>6){rank=6; role="スリーカード";}
-                }else if(number[n]==2){
-                    for(int m=n+1;m<=13;m++){
-                        if(number[m]==2){
-                            if(rank>8){rank=8; role="ツーペア";}
-                        }  
-                    }
-                    if(rank>9){rank=9; role="ワンペア";}
-                }else{
-                    for(int j=1;j<=10;j++){
-                        int straight=number[j]*number[j+1]*number[j+2]*number[j+3]*number[j+4];
-                        if(straight==1){
-                            if(rank>7){rank=7; role="ストレート";}
-                        }
-                    }
-                    if(rank>10){rank=10; role="ハイカード";}
+    // 役を判断 //
+    public void CheckRole(){
+        int AKQJ=number[1]*number[10]*number[11]*number[12]*number[13];
+        for(int i=0;i<=3;i++){
+            if(mark[i]==5){
+                if(AKQJ==1){
+                    if(rank>1){ rank=1; role="ロイヤルストレートフラッシュ";}
                 }
-            }
-        }    
+                for(int j=1;j<=9;j++){
+                    int straight=number[j]*number[j+1]*number[j+2]*number[j+3]*number[j+4];
+                    if(straight==1){
+                        if(rank>2){rank=2; role="ストレートフラッシュ";}    
+                    }else{
+                        if(rank>5){rank=5; role="フラッシュ";}
+                    }   
+                }
+            }else {
+                for(int n=1;n<=13;n++){
+                    if(number[n]==4){
+                        if(rank>3){rank=3; role="フォーカード";}
+                    }else if(number[n]==3){
+                        for(int m=1;m<=13;m++){
+                            if(number[m]==2){
+                                if(rank>4){rank=4; role="フルハウス";}    
+                            }
+                        }
+                        if(rank>6){rank=6; role="スリーカード";}
+                    }else if(number[n]==2){
+                        for(int m=n+1;m<=13;m++){
+                            if(number[m]==2){
+                                if(rank>8){rank=8; role="ツーペア";}
+                            }  
+                        }
+                        if(rank>9){rank=9; role="ワンペア";}
+                    }else{
+                        for(int j=1;j<=10;j++){
+                            int straight=number[j]*number[j+1]*number[j+2]*number[j+3]*number[j+4];
+                            if(straight==1){
+                                if(rank>7){rank=7; role="ストレート";}
+                            }
+                        }
+                        if(rank>10){rank=10; role="ハイカード";}
+                    }
+                }
+            }    
+        }
     }
-}
 
     //勝敗表示//
     public String Winlose(Hand player1,Hand player2){
@@ -335,6 +335,10 @@ public void CheckRole(){
                 break;
         }
     }
+
+    public void count(){
+        this.copycounter++;
+    }
 }
 
 class Card{
@@ -382,6 +386,5 @@ class Deck{
 
     public void CopyDeck(Deck deck){
         this.cardlist=deck.cardlist;
-        this.cardindex=deck.cardindex;
     }
 }
